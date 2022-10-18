@@ -1,4 +1,4 @@
-export interface UserFromDB {
+export default interface UserFromDB {
   id: number;
   name: string;
   email: string;
