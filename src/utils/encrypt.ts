@@ -12,6 +12,6 @@ export async function comparePasswords(
   crypPassword: string
 ): Promise<boolean> {
   const passwordsMatch = await bcrypt.compare(password, crypPassword);
-  if (!passwordsMatch) return false;
-  return true;
+  if (passwordsMatch) return true;
+  return false;
 }
