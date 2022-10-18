@@ -1,6 +1,8 @@
 import * as userRepository from "../repositories/userRepositories";
+import signInUser from "../types/signInType";
 import newUser from "../types/signUpType";
 import UserFromDB from "../types/userDBType";
+import { createToken } from "../utils/createToken";
 import { comparePasswords, encryptPassword } from "../utils/encrypt";
 
 export async function create(user: newUser) {
@@ -18,6 +20,15 @@ export async function create(user: newUser) {
 
   //retorne ao usuário qual regra de negócio foi quebrada, no exemplo abaixo, foi considerada a de email já cadastrado
   throw { code: "Conflict", message: "Email already in use" };
+}
+
+export async function signIn(user: signInUser): Promise<string> {
+  const userInDb: UserFromDB = await findByEmail(user.email);
+  await passwordsMatch(user.password, userInDb.password);
+
+  const token = await createToken(userInDb.id);
+
+  return token;
 }
 
 async function checkEmailIsAvailable(email: string): Promise<boolean> {
@@ -39,12 +50,9 @@ async function findByEmail(email: string): Promise<UserFromDB> {
   throw { code: "Not found", message: "You haven1t an account yet" };
 }
 
-async function passwordsMatch(
-  password: string,
-  encripPassword: string
-): Promise<boolean> {
+async function passwordsMatch(password: string, encripPassword: string) {
   const match: boolean = await comparePasswords(password, encripPassword);
-  if (match) return true;
+  if (match) return;
 
   //caso as senhas não sejam iguais, negar login do usuário
   throw { code: "Unauthorized", message: "Email or password incorrect!" };
