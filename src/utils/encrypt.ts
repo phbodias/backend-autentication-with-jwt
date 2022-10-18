@@ -6,3 +6,12 @@ export async function encryptPassword(password: string): Promise<string> {
   const crypt = await bcrypt.hash(password, salt);
   return crypt;
 }
+
+export async function comparePasswords(
+  password: string,
+  crypPassword: string
+): Promise<boolean> {
+  const passwordsMatch = await bcrypt.compare(password, crypPassword);
+  if (!passwordsMatch) return false;
+  return true;
+}
