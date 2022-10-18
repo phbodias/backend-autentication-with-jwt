@@ -1,7 +1,7 @@
 import * as userRepository from "../repositories/userRepositories";
 import newUser from "../types/signUpType";
 import UserFromDB from "../types/userDBType";
-import { encryptPassword } from "../utils/encrypt";
+import { comparePasswords, encryptPassword } from "../utils/encrypt";
 
 export async function create(user: newUser) {
   //verifique se o email está disponível, caso faça parte de suas regras de negócio
@@ -37,4 +37,15 @@ async function findByEmail(email: string): Promise<UserFromDB> {
 
   //caso não seja encontrado nenhum usuário com o email passado, retorne isso para o usuário
   throw { code: "Not found", message: "You haven1t an account yet" };
+}
+
+async function passwordsMatch(
+  password: string,
+  encripPassword: string
+): Promise<boolean> {
+  const match: boolean = await comparePasswords(password, encripPassword);
+  if (match) return true;
+
+  //caso as senhas não sejam iguais, negar login do usuário
+  throw { code: "Unauthorized", message: "Email or password incorrect!" };
 }
