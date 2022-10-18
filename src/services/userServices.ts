@@ -1,5 +1,6 @@
 import * as userRepository from "../repositories/userRepositories";
 import newUser from "../types/signUpType";
+import UserFromDB from "../types/userDBType";
 import { encryptPassword } from "../utils/encrypt";
 
 export async function create(user: newUser) {
@@ -27,4 +28,13 @@ async function checkEmailIsAvailable(email: string): Promise<boolean> {
 async function checkNameIsAvailable(name: string): Promise<boolean> {
   const isAvailable: boolean = await userRepository.nameIsAvailable(name);
   return isAvailable;
+}
+
+async function findByEmail(email: string): Promise<UserFromDB> {
+  const user = await userRepository.findByEmail(email);
+
+  if (user) return user;
+
+  //caso não seja encontrado nenhum usuário com o email passado, retorne isso para o usuário
+  throw { code: "Not found", message: "You haven1t an account yet" };
 }
