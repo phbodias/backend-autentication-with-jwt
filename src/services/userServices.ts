@@ -47,7 +47,7 @@ async function findByEmail(email: string): Promise<UserFromDB> {
   if (user) return user;
 
   //caso não seja encontrado nenhum usuário com o email passado, retorne isso para o usuário
-  throw { code: "Not found", message: "You haven1t an account yet" };
+  throw { code: "Not found", message: "You haven't an account yet" };
 }
 
 async function passwordsMatch(password: string, encripPassword: string) {
