@@ -1,4 +1,4 @@
-# Cadastro de usuários e autenticação com jwt
+# Cadastro de usuários e autenticação com node e jwt
 Backend em typescript para autenticação com jwt, feito para ser reaproveitado em outros códigos,
 
 ## :clipboard: Descrição
