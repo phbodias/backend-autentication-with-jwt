@@ -54,7 +54,7 @@ GET /authenticated (authenticated)
 
 ## 🏁 Rodando a aplicação
 
-Certifique-se que você possui a última versão estável do node [Node.js](https://nodejs.org/en/download/) e [npm](https://www.npmjs.com/) rodando localmente.
+Certifique-se que você possui a última versão estável do [Node.js](https://nodejs.org/en/download/) e [npm](https://www.npmjs.com/) rodando localmente.
 
 Clone este repositório em sua máquina:
 
