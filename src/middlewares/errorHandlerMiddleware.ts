@@ -6,7 +6,7 @@ async function errorHandler(
   res: Response,
   next: NextFunction
 ) {
-  if (error.code === "NotFound") {
+  if (error.code === "Not found") {
     return res.status(404).send(error.message);
   } else if (error.code === "Conflict") {
     return res.status(409).send(error.message);
