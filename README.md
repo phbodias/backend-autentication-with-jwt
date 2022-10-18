@@ -74,3 +74,6 @@ Feito isso, rode a aplicação com:
 ```
 npm start
 ```
+
+---
+Caso fique em dúvidas em relação à algum conceito sobre jwt, você pode acessar a documentação em [jwt-node](https://github.com/auth0/node-jsonwebtoken#readme).
