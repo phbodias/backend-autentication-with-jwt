@@ -12,17 +12,13 @@ export async function validateJWT(
   const { authorization } = req.headers;
   const token = authorization?.replace("Bearer ", "");
 
-  if (token) {
-    const SECRET: string = process.env.TOKEN_SECRET_KEY as string;
+  const SECRET: string = process.env.TOKEN_SECRET_KEY as string;
 
-    jwt.verify(token, SECRET, (err: any, decoded: any) => {
-      if (err) throw { code: "Unauthorized", message: "Token inválido" };
+  jwt.verify(token, SECRET, (err: any, decoded: any) => {
+    if (err) throw { code: "Unauthorized", message: "Token inválido" };
 
-      res.locals.userId = Number(decoded.userId);
+    res.locals.userId = Number(decoded.id);
 
-      next();
-    });
-  }
-
-  throw { code: "Unauthorized", message: "Token inválido" };
+    next();
+  });
 }
