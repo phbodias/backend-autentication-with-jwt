@@ -1,6 +1,9 @@
 import * as userRepository from "../repositories/userRepositories";
+import signInUser from "../types/signInType";
 import newUser from "../types/signUpType";
-import { encryptPassword } from "../utils/encrypt";
+import UserFromDB from "../types/userDBType";
+import { createToken } from "../utils/createToken";
+import { comparePasswords, encryptPassword } from "../utils/encrypt";
 
 export async function create(user: newUser) {
   //verifique se o email está disponível, caso faça parte de suas regras de negócio
@@ -19,6 +22,15 @@ export async function create(user: newUser) {
   throw { code: "Conflict", message: "Email already in use" };
 }
 
+export async function signIn(user: signInUser): Promise<string> {
+  const userInDb: UserFromDB = await findByEmail(user.email);
+  await passwordsMatch(user.password, userInDb.password);
+
+  const token = await createToken(userInDb.id);
+
+  return token;
+}
+
 async function checkEmailIsAvailable(email: string): Promise<boolean> {
   const isAvailable: boolean = await userRepository.emailIsAvailable(email);
   return isAvailable;
@@ -27,4 +39,21 @@ async function checkEmailIsAvailable(email: string): Promise<boolean> {
 async function checkNameIsAvailable(name: string): Promise<boolean> {
   const isAvailable: boolean = await userRepository.nameIsAvailable(name);
   return isAvailable;
+}
+
+async function findByEmail(email: string): Promise<UserFromDB> {
+  const user = await userRepository.findByEmail(email);
+
+  if (user) return user;
+
+  //caso não seja encontrado nenhum usuário com o email passado, retorne isso para o usuário
+  throw { code: "Not found", message: "You haven't an account yet" };
+}
+
+async function passwordsMatch(password: string, encripPassword: string) {
+  const match: boolean = await comparePasswords(password, encripPassword);
+  if (match) return;
+
+  //caso as senhas não sejam iguais, negar login do usuário
+  throw { code: "Unauthorized", message: "Email or password incorrect!" };
 }
