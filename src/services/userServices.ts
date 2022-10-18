@@ -23,10 +23,10 @@ export async function create(user: newUser) {
 }
 
 export async function signIn(user: signInUser): Promise<string> {
-  /* const userInDb: UserFromDB = await findByEmail(user.email);
-  await passwordsMatch(user.password, userInDb.password); */
+  const userInDb: UserFromDB = await findByEmail(user.email);
+  await passwordsMatch(user.password, userInDb.password);
 
-  const token = await createToken(1);
+  const token = await createToken(userInDb.id);
 
   return token;
 }
