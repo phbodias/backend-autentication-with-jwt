@@ -15,7 +15,7 @@ model Users {
   name      String
   email     String
   password  String
-  createdAt DateTime
+  createdAt DateTime @default(now())
 
   @@map("users")
 }

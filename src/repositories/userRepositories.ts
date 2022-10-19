@@ -1,10 +1,11 @@
 //Aqui deve-se fazer a conexão com o banco de dados, para criar um usuário ou checar credenciais
+import prisma from "../database/prisma";
 import newUser from "../types/signUpType";
 import UserFromDB from "../types/userDBType";
 
 export async function create(data: newUser) {
   //use essa função para inserir um novo usuário em seu banco
-  return;
+  return await prisma.users.create({ data });
 }
 
 export async function emailIsAvailable(email: string): Promise<boolean> {
