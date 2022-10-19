@@ -14,6 +14,7 @@ A arquitetura do código é disposta em camadas (Rotas -> Controladores -> Servi
 - JWTs tokens
 - Node.js
 - TypeScript
+- Prisma ORM
 
 ---
 
