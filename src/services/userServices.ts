@@ -10,9 +10,9 @@ export async function create(user: newUser) {
   const emailIsAvailable: boolean = await checkEmailIsAvailable(user.email);
 
   //verifique se o nome de usuário está disponível, caso faça parte de suas regras de negócio
-  const nameIsAvailable: boolean = await checkNameIsAvailable(user.name);
+  //const nameIsAvailable: boolean = await checkNameIsAvailable(user.name);
 
-  if (emailIsAvailable && nameIsAvailable) {
+  if (emailIsAvailable) {
     user.password = await encryptPassword(user.password); //encripte a senha do usuário antes de salva-lá no banco
 
     return await userRepository.create(user);
@@ -32,12 +32,12 @@ export async function signIn(user: signInUser): Promise<string> {
 }
 
 async function checkEmailIsAvailable(email: string): Promise<boolean> {
-  const isAvailable: boolean = !!(await userRepository.findByEmail(email));
+  const isAvailable: boolean = !(await userRepository.findByEmail(email));
   return isAvailable;
 }
 
 async function checkNameIsAvailable(name: string): Promise<boolean> {
-  const isAvailable: boolean = !!(await userRepository.findByName(name));
+  const isAvailable: boolean = !(await userRepository.findByName(name));
   return isAvailable;
 }
 
