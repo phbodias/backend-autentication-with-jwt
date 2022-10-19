@@ -4,7 +4,6 @@ import newUser from "../interfaces/signUpInter";
 import { Users } from "@prisma/client";
 
 export async function create(data: newUser) {
-  //use essa função para inserir um novo usuário em seu banco
   return await prisma.users.create({ data });
 }
 
