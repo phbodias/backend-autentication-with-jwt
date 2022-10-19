@@ -1,18 +1,18 @@
 import * as userRepository from "../repositories/userRepositories";
 import signInUser from "../interfaces/signInInter";
 import newUser from "../interfaces/signUpInter";
-import UserFromDB from "../interfaces/userDBInter";
 import { createToken } from "../utils/createToken";
 import { comparePasswords, encryptPassword } from "../utils/encrypt";
+import { Users } from "@prisma/client";
 
 export async function create(user: newUser) {
   //verifique se o email está disponível, caso faça parte de suas regras de negócio
   const emailIsAvailable: boolean = await checkEmailIsAvailable(user.email);
 
   //verifique se o nome de usuário está disponível, caso faça parte de suas regras de negócio
-  const nameIsAvailable: boolean = await checkNameIsAvailable(user.name);
+  //const nameIsAvailable: boolean = await checkNameIsAvailable(user.name);
 
-  if (emailIsAvailable && nameIsAvailable) {
+  if (emailIsAvailable) {
     user.password = await encryptPassword(user.password); //encripte a senha do usuário antes de salva-lá no banco
 
     return await userRepository.create(user);
@@ -23,7 +23,7 @@ export async function create(user: newUser) {
 }
 
 export async function signIn(user: signInUser): Promise<string> {
-  const userInDb: UserFromDB = await findByEmail(user.email);
+  const userInDb: Users = await findByEmail(user.email);
   await passwordsMatch(user.password, userInDb.password);
 
   const token = await createToken(userInDb.id);
@@ -32,16 +32,16 @@ export async function signIn(user: signInUser): Promise<string> {
 }
 
 async function checkEmailIsAvailable(email: string): Promise<boolean> {
-  const isAvailable: boolean = await userRepository.emailIsAvailable(email);
+  const isAvailable: boolean = !(await userRepository.findByEmail(email));
   return isAvailable;
 }
 
 async function checkNameIsAvailable(name: string): Promise<boolean> {
-  const isAvailable: boolean = await userRepository.nameIsAvailable(name);
+  const isAvailable: boolean = !(await userRepository.findByName(name));
   return isAvailable;
 }
 
-async function findByEmail(email: string): Promise<UserFromDB> {
+async function findByEmail(email: string): Promise<Users> {
   const user = await userRepository.findByEmail(email);
 
   if (user) return user;
