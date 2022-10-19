@@ -1,7 +1,7 @@
 import { Response, Request } from "express";
-import newUser from "../types/signUpType";
+import newUser from "../interfaces/signUpInter";
 import * as userServices from "../services/userServices";
-import signInUser from "../types/signInType";
+import signInUser from "../interfaces/signInInter";
 
 export async function create(req: Request, res: Response) {
   const user: newUser = req.body;
