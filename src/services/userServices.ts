@@ -1,7 +1,7 @@
 import * as userRepository from "../repositories/userRepositories";
 import signInUser from "../interfaces/signInInter";
-import newUser from "../interfaces/signUpInter";
-import UserFromDB from "../interfaces/userDBInter";
+import newUser from "../interfaces/signUpType";
+import UserFromDB from "../interfaces/userDBType";
 import { createToken } from "../utils/createToken";
 import { comparePasswords, encryptPassword } from "../utils/encrypt";
 
@@ -32,7 +32,7 @@ export async function signIn(user: signInUser): Promise<string> {
 }
 
 async function checkEmailIsAvailable(email: string): Promise<boolean> {
-  const isAvailable: boolean = await userRepository.emailIsAvailable(email);
+  const isAvailable: boolean = !!(await userRepository.findByEmail(email));
   return isAvailable;
 }
 
