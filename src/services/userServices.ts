@@ -1,7 +1,7 @@
 import * as userRepository from "../repositories/userRepositories";
-import signInUser from "../types/signInType";
-import newUser from "../types/signUpType";
-import UserFromDB from "../types/userDBType";
+import signInUser from "../interfaces/signInInter";
+import newUser from "../interfaces/signUpInter";
+import UserFromDB from "../interfaces/userDBInter";
 import { createToken } from "../utils/createToken";
 import { comparePasswords, encryptPassword } from "../utils/encrypt";
 

@@ -1,24 +1,18 @@
 //Aqui deve-se fazer a conexão com o banco de dados, para criar um usuário ou checar credenciais
 import prisma from "../database/prisma";
-import newUser from "../types/signUpType";
-import UserFromDB from "../types/userDBType";
+import newUser from "../interfaces/signUpInter";
+import { Users } from "@prisma/client";
 
 export async function create(data: newUser) {
   //use essa função para inserir um novo usuário em seu banco
   return await prisma.users.create({ data });
 }
 
-export async function emailIsAvailable(email: string): Promise<boolean> {
-  //Caso sua regra de negócio impeça reincidência de email, use essa função para checar se já existe no banco um cadastro refente ao email passado, retornando um booleano
-  return true;
+export async function findByName(name: string): Promise<Users> {
+  return await prisma.users.findFirst({ where: { name } });
 }
 
-export async function nameIsAvailable(name: string): Promise<boolean> {
-  //Caso sua regra de negócio impeça reincidência de nome de usuário, use essa função para checar se já existe no banco um cadastro de usuário com esse nome, retornando um booleano
-  return true;
-}
-
-export async function findByEmail(email: string): Promise<UserFromDB> {
+export async function findByEmail(email: string): Promise<Users> {
   //Use esta função para localizar no banco um usuário pelo email, retornando o mesmo caso encontre
   return;
 }
