@@ -1,9 +1,9 @@
 import * as userRepository from "../repositories/userRepositories";
 import signInUser from "../interfaces/signInInter";
-import newUser from "../interfaces/signUpType";
-import UserFromDB from "../interfaces/userDBType";
+import newUser from "../interfaces/signUpInter";
 import { createToken } from "../utils/createToken";
 import { comparePasswords, encryptPassword } from "../utils/encrypt";
+import { Users } from "@prisma/client";
 
 export async function create(user: newUser) {
   //verifique se o email está disponível, caso faça parte de suas regras de negócio
@@ -23,7 +23,7 @@ export async function create(user: newUser) {
 }
 
 export async function signIn(user: signInUser): Promise<string> {
-  const userInDb: UserFromDB = await findByEmail(user.email);
+  const userInDb: Users = await findByEmail(user.email);
   await passwordsMatch(user.password, userInDb.password);
 
   const token = await createToken(userInDb.id);
@@ -37,11 +37,11 @@ async function checkEmailIsAvailable(email: string): Promise<boolean> {
 }
 
 async function checkNameIsAvailable(name: string): Promise<boolean> {
-  const isAvailable: boolean = await userRepository.nameIsAvailable(name);
+  const isAvailable: boolean = !!(await userRepository.findByName(name));
   return isAvailable;
 }
 
-async function findByEmail(email: string): Promise<UserFromDB> {
+async function findByEmail(email: string): Promise<Users> {
   const user = await userRepository.findByEmail(email);
 
   if (user) return user;
