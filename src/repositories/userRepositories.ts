@@ -13,6 +13,5 @@ export async function findByName(name: string): Promise<Users> {
 }
 
 export async function findByEmail(email: string): Promise<Users> {
-  //Use esta função para localizar no banco um usuário pelo email, retornando o mesmo caso encontre
-  return;
+  return await prisma.users.findFirst({ where: { email } });
 }
