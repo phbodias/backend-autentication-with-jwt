@@ -9,3 +9,13 @@ export async function signUpFactory() {
     confirmPassword: password,
   };
 }
+
+export async function wrongSignUpFactory() {
+  const password = faker.internet.password();
+  return {
+    name: faker.internet.userName(),
+    email: faker.internet.email(),
+    password,
+    confirmPassword: password + "wrong",
+  };
+}
