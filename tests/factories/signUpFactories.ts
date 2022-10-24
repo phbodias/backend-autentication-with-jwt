@@ -6,7 +6,7 @@ export async function signUpFactory() {
     name: faker.internet.userName(),
     email: faker.internet.email(),
     password,
-    confirmPassword: password,
+    repeatPassword: password,
   };
 }
 
@@ -16,6 +16,6 @@ export async function wrongSignUpFactory() {
     name: faker.internet.userName(),
     email: faker.internet.email(),
     password,
-    confirmPassword: password + "wrong",
+    repeatPassword: password + "wrong",
   };
 }
