@@ -7,7 +7,7 @@ export async function create(req: Request, res: Response) {
   const { name, email, password } = req.body;
   const user: newUser = { name, email, password };
   await userServices.create(user);
-  return res.sendStatus(200);
+  return res.sendStatus(201);
 }
 
 export async function signIn(req: Request, res: Response) {
