@@ -7,7 +7,7 @@
     "build": "tsc",
     "start": "node ./dist/server.js",
     "dev": "nodemon ./src/server.ts",
-    "test:integration": "dotenv -e .env.test npx prisma migrate dev jest -i --no-cache"
+    "test:integration": "dotenv -e .env.test npx prisma migrate dev && dotenv -e .env.test jest -i --no-cache"
   },
   "repository": {
     "type": "git",
