@@ -4,7 +4,8 @@ import * as userServices from "../services/userServices";
 import signInUser from "../interfaces/signInInter";
 
 export async function create(req: Request, res: Response) {
-  const user: newUser = req.body;
+  const { name, email, password } = req.body;
+  const user: newUser = { name, email, password };
   await userServices.create(user);
   return res.sendStatus(200);
 }
