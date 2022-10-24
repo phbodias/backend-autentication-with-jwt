@@ -15,7 +15,6 @@ afterAll(async () => {
 describe("Testes para rota /sign-up", () => {
   it("Insere um novo usuário e recebe status code 201", async () => {
     const user = await signUpFactories.signUpFactory();
-    console.log(user);
     const result = await supertest(app).post("/sign-up").send(user);
 
     const userInserted = await prisma.users.findFirst({
@@ -24,5 +23,12 @@ describe("Testes para rota /sign-up", () => {
 
     expect(result.status).toBe(201);
     expect(userInserted).not.toBe(undefined);
+  });
+
+  it("Tenta inserir novo usuário com repeatPassword errado e recebe status code 422", async () => {
+    const user = await signUpFactories.wrongSignUpFactory();
+    const result = await supertest(app).post("/sign-up").send(user);
+
+    expect(result.status).toBe(422);
   });
 });
