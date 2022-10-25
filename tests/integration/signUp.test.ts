@@ -8,7 +8,6 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
-  await prisma.$executeRaw`TRUNCATE TABLE users;`;
   await prisma.$disconnect();
 });
 
@@ -35,7 +34,9 @@ describe("Testes para rota /sign-up", () => {
   it("Tenta inserir usuário com email já cadastrado no banco status 409", async () => {
     const user = await userFactories.signUpFactory();
 
-    await supertest(app).post("/sign-up").send(user);
+    await prisma.users.create({
+      data: { name: "A", email: user.email, password: "senha123" },
+    });
 
     const result = await supertest(app).post("/sign-up").send(user);
 
