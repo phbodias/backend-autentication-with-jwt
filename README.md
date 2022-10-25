@@ -69,9 +69,6 @@ Dentro da pasta do projeto, rode o seguinte comando para instalar as dependênci
 npm install
 ```
 
-
-Configure a camada "repositories" com as informaçoes de acesso ao seu banco de dados.
-
 Crie e configure um arquivo ".env", com base no arquivo ".env-example"
 
 Feito isso, rode a aplicação com:
