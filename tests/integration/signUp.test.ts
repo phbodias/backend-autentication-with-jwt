@@ -1,7 +1,7 @@
 import supertest from "supertest";
 import app from "../../src/app";
 import prisma from "../../src/database/prisma";
-import * as signUpFactories from "../factories/signUpFactories";
+import * as userFactories from "../factories/userFactories";
 
 beforeEach(async () => {
   await prisma.$executeRaw`TRUNCATE TABLE users;`;
@@ -14,7 +14,7 @@ afterAll(async () => {
 
 describe("Testes para rota /sign-up", () => {
   it("Insere um novo usuário e recebe status code 201", async () => {
-    const user = await signUpFactories.signUpFactory();
+    const user = await userFactories.signUpFactory();
     const result = await supertest(app).post("/sign-up").send(user);
 
     const userInserted = await prisma.users.findFirst({
@@ -26,14 +26,14 @@ describe("Testes para rota /sign-up", () => {
   });
 
   it("Tenta inserir novo usuário com repeatPassword errado e recebe status code 422", async () => {
-    const user = await signUpFactories.wrongSignUpFactory();
+    const user = await userFactories.wrongSignUpFactory();
     const result = await supertest(app).post("/sign-up").send(user);
 
     expect(result.status).toBe(422);
   });
 
   it("Tenta inserir usuário com email já cadastrado no banco status 409", async () => {
-    const user = await signUpFactories.signUpFactory();
+    const user = await userFactories.signUpFactory();
 
     await supertest(app).post("/sign-up").send(user);
 
