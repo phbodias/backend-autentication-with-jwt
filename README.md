@@ -15,6 +15,7 @@ A arquitetura do código é disposta em camadas (Rotas -> Controladores -> Servi
 - Node.js
 - TypeScript
 - Prisma ORM
+- Testes de integração com Jest e Supertest
 
 ---
 
@@ -77,6 +78,14 @@ Feito isso, rode a aplicação com:
 
 ```
 npm start
+```
+
+Para rodar os testes de integração, crie e configure um arquivo ".env.test", com base no arquivo ".env-example"
+
+Feito isso, utilize o comando:
+
+```
+npm run test:integration
 ```
 
 ---
