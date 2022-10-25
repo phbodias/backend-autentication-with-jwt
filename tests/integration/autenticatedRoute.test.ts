@@ -18,16 +18,17 @@ describe("Testes para simular tentativa de acesso à uma rota autenticada", () =
     const token = login.body.token;
     const result = await supertest(app)
       .get("/authenticated")
+      .send()
       .set({ Authorization: `Bearer ${token}` });
     expect(result.status).toBe(200);
   });
 
-  it("Tenta acessas rota autenticada sem enviar token e recebe status code 401", async () => {
+  it("Tenta acessar rota autenticada sem enviar token e recebe status code 401", async () => {
     const result = await supertest(app).get("/authenticated");
     expect(result.status).toBe(401);
   });
 
-  it("Tenta acessas rota autenticada com token invalido e recebe status 401", async () => {
+  it("Tenta acessar rota autenticada com token invalido e recebe status 401", async () => {
     const user = await createUserScenario();
     const login = await supertest(app).post("/sign-in").send(user);
     const token = login.body.token;

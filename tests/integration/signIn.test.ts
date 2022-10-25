@@ -22,7 +22,7 @@ describe("Testes para rota /sign-in", () => {
 
   it("Login com senha incorreta e recebe status code 401", async () => {
     const user = await createUserScenario();
-    user.password = user.password + "wrong";
+    user.password = `${user.password}wrong`;
     const result = await supertest(app).post("/sign-in").send(user);
     expect(result.status).toBe(401);
   });
