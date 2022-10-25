@@ -3,14 +3,6 @@ import app from "../../src/app";
 import prisma from "../../src/database/prisma";
 import createUserScenario from "../factories/createUserScenario";
 
-beforeEach(async () => {
-  await prisma.$executeRaw`TRUNCATE TABLE users RESTART IDENTITY CASCADE;`;
-});
-
-afterAll(async () => {
-  await prisma.$disconnect();
-});
-
 describe("Testes para simular tentativa de acesso à uma rota autenticada", () => {
   it("Acessa rota autenticada ao enviar token valido e recebe status 200", async () => {
     const user = await createUserScenario();

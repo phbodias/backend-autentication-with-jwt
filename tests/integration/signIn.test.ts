@@ -4,13 +4,6 @@ import prisma from "../../src/database/prisma";
 import createUserScenario from "../factories/createUserScenario";
 import { signUpFactory } from "../factories/userFactories";
 
-beforeEach(async () => {
-  await prisma.$executeRaw`TRUNCATE TABLE users RESTART IDENTITY CASCADE;`;
-});
-
-afterAll(async () => {
-  await prisma.$disconnect();
-});
 
 describe("Testes para rota /sign-in", () => {
   it("Faz o login e recebe status 200 e o token de acesso", async () => {

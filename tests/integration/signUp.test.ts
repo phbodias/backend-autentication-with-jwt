@@ -3,14 +3,6 @@ import app from "../../src/app";
 import prisma from "../../src/database/prisma";
 import * as userFactories from "../factories/userFactories";
 
-beforeEach(async () => {
-  await prisma.$executeRaw`TRUNCATE TABLE users RESTART IDENTITY CASCADE;`;
-});
-
-afterAll(async () => {
-  await prisma.$disconnect();
-});
-
 describe("Testes para rota /sign-up", () => {
   it("Insere um novo usuário e recebe status code 201", async () => {
     const user = await userFactories.signUpFactory();
@@ -34,9 +26,9 @@ describe("Testes para rota /sign-up", () => {
   it("Tenta inserir usuário com email já cadastrado no banco status 409", async () => {
     const user = await userFactories.signUpFactory();
 
-    await prisma.users.create({
-      data: { name: "A", email: user.email, password: "senha123" },
-    });
+    await supertest(app)
+      .post("/sign-up")
+      .send({ name: "Nome", email: user.email, password: "senha123" });
 
     const result = await supertest(app).post("/sign-up").send(user);
 
