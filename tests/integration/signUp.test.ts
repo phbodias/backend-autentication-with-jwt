@@ -31,4 +31,14 @@ describe("Testes para rota /sign-up", () => {
 
     expect(result.status).toBe(422);
   });
+
+  it("Tenta inserir usuário com email já cadastrado no banco status 409", async () => {
+    const user = await signUpFactories.signUpFactory();
+
+    await supertest(app).post("/sign-up").send(user);
+
+    const result = await supertest(app).post("/sign-up").send(user);
+
+    expect(result.status).toBe(409);
+  });
 });
