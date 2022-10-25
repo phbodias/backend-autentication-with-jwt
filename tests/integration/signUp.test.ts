@@ -4,7 +4,7 @@ import prisma from "../../src/database/prisma";
 import * as userFactories from "../factories/userFactories";
 
 beforeEach(async () => {
-  await prisma.$executeRaw`TRUNCATE TABLE users;`;
+  await prisma.$executeRaw`TRUNCATE TABLE users RESTART IDENTITY CASCADE;`;
 });
 
 afterAll(async () => {
@@ -30,15 +30,5 @@ describe("Testes para rota /sign-up", () => {
     const result = await supertest(app).post("/sign-up").send(user);
 
     expect(result.status).toBe(422);
-  });
-
-  it("Tenta inserir usuário com email já cadastrado no banco status 409", async () => {
-    const user = await userFactories.signUpFactory();
-
-    await supertest(app).post("/sign-up").send(user);
-
-    const result = await supertest(app).post("/sign-up").send(user);
-
-    expect(result.status).toBe(409);
   });
 });
